@@ -22,13 +22,13 @@ AC_SUBST(GETTEXT_PACKAGE)
 AM_GLIB_GNU_GETTEXT
 IT_PROG_INTLTOOL([0.40.0]) 
 
-PKG_CHECK_EXISTS(MONO, mono >= 2.0)
-PKG_CHECK_MODULES(BANSHEE, banshee-1-thickclient >= 1.5.0)
-PKG_CHECK_MODULES(CLUTTER, clutter-sharp >= 0.9 clutter-gtk-sharp >= 0.9)
+PKG_CHECK_EXISTS(MONO, mono >= 3.0)
+PKG_CHECK_MODULES(BANSHEE, banshee-thickclient >= 2.9.0)
+PKG_CHECK_MODULES(CLUTTER, clutter-sharp-1.0 >= 1.18)
 AC_SUBST(BANSHEE_LIBS)
 AC_SUBST(CLUTTER_LIBS)
 AC_PATH_PROG(MONO, mono)
-AC_PATH_PROG(MCS, gmcs)
+AC_PATH_PROG(MCS, mcs)
 
 BANSHEE_PATH=`pkg-config --variable=bansheedir banshee-1-core`
 AC_SUBST(BANSHEE_PATH)
