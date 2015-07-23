@@ -30,27 +30,9 @@ SOURCES =  \
 	Cubano.NowPlaying/NowPlayingSource.cs \
 	Cubano.NowPlaying/NowPlayingStage.cs \
 	Hyena.Gui.Canvas/AnimationManager.cs \
-	Hyena.Gui.Canvas/Brush.cs \
-	Hyena.Gui.Canvas/CanvasHost.cs \
 	Hyena.Gui.Canvas/CanvasItem.cs \
-	Hyena.Gui.Canvas/CanvasItemCollection.cs \
-	Hyena.Gui.Canvas/CanvasManager.cs \
 	Hyena.Gui.Canvas/FixedPanel.cs \
-	Hyena.Gui.Canvas/FontWeight.cs \
-	Hyena.Gui.Canvas/Image.cs \
-	Hyena.Gui.Canvas/ImageBrush.cs \
-	Hyena.Gui.Canvas/MarginStyle.cs \
-	Hyena.Gui.Canvas/Orientation.cs \
-	Hyena.Gui.Canvas/Panel.cs \
-	Hyena.Gui.Canvas/Rect.cs \
-	Hyena.Gui.Canvas/ShadowMarginStyle.cs \
-	Hyena.Gui.Canvas/Size.cs \
-	Hyena.Gui.Canvas/Slider.cs \
-	Hyena.Gui.Canvas/StackPanel.cs \
-	Hyena.Gui.Canvas/TestTile.cs \
-	Hyena.Gui.Canvas/TextBlock.cs \
-	Hyena.Gui.Canvas/TextWrap.cs \
-	Hyena.Gui.Canvas/Thickness.cs
+	Hyena.Gui.Canvas/Panel.cs
 
 RESOURCES =
 
@@ -62,8 +44,8 @@ REFERENCES_PACKAGES =  \
 	-pkg:banshee-1-thickclient \
 	-pkg:clutter-gtk-sharp \
 	-pkg:clutter-sharp \
-	-pkg:glib-sharp-2.0 \
-	-pkg:gtk-sharp-2.0 \
+	-pkg:glib-sharp-3.0 \
+	-pkg:gtk-sharp-3.0 \
 	-pkg:taglib-sharp \
 	-r:Mono.Cairo
 
@@ -74,7 +56,7 @@ REFERENCES_ASSEMBLIES = ../../bin/Mono.Addins.dll
 REFERENCES_ASSEMBLIES_BUILD = $(foreach ref, $(REFERENCES_ASSEMBLIES), \
 	-r:$(srcdir)/$(ref))
 
-REFERENCES_BUILD = $(BANSHEE_LIBS) $(CLUTTER_LIBS) $(REFERENCES_ASSEMBLIES_BUILD)
+REFERENCES_BUILD = $(BANSHEE_LIBS) $(CLUTTER_LIBS) $(COGL_LIBS) $(REFERENCES_ASSEMBLIES_BUILD)
 
 all: $(ASSEMBLY)
 
