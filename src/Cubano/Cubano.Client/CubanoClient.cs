@@ -4,6 +4,7 @@ using System.Reflection;
 using Banshee.Base;
 using Banshee.ServiceStack;
 using Mono.Addins;
+using Hyena;
 
 namespace Cubano.Client
 {
@@ -29,7 +30,7 @@ namespace Cubano.Client
         protected override void InitializeGtk ()
         {
             Gtk.Application.Init ();
-            Clutter.Application.InitForToolkit ();
+            Clutter.Application.Init ();
         }
         
         protected override void OnRegisterServices ()

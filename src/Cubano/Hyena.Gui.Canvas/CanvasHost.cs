@@ -163,14 +163,12 @@ namespace Hyena.Gui.Canvas
         
         private Random rand;
         
-        protected override bool OnExposeEvent (Gdk.EventExpose evnt)
+        protected override bool OnDrawn (Cairo.Context cr)
         {
             if (canvas_child == null || !canvas_child.Visible || !Visible || !IsMapped) {
                 return true;
             }
-            
-            Cairo.Context cr = Gdk.CairoHelper.Create (evnt.Window);
-            
+                        
             foreach (Gdk.Rectangle damage in evnt.Region.GetRectangles ()) {
                 cr.Rectangle (damage.X, damage.Y, damage.Width, damage.Height);
                 cr.Clip ();

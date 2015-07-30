@@ -68,10 +68,10 @@ namespace Banshee.Gui.Widgets
         
         protected void ShapeWindow ()
         {
-            using (var bitmap = new Gdk.Pixmap (GdkWindow,
+            using (var bitmap = new Gdk.Pixbuf (Window,
                 Allocation.Width, Allocation.Height, 1)) {
             
-                using (var cr = Gdk.CairoHelper.Create (bitmap)) {
+                using (var cr = Gdk.CairoHelper.Create (Window)) {
                     DrawShape (cr);
                 }
                 
@@ -82,7 +82,7 @@ namespace Banshee.Gui.Widgets
                     using (var cr = Gdk.CairoHelper.Create (GdkWindow)) {
                         DrawShape (cr);
                     }
-                    
+
                     try {
                         CompositeUtils.InputShapeCombineMask (this, null, 0, 0);
                         CompositeUtils.InputShapeCombineMask (this, bitmap, 0, 0);
@@ -130,22 +130,32 @@ namespace Banshee.Gui.Widgets
             set { margin_right = value; QueueResize (); }
         }
         
-        protected override void OnSizeRequested (ref Requisition requisition)
-        {
-            if (child != null && child.Visible) {
-                // Add the child's width/height        
-                Requisition child_requisition = child.SizeRequest ();
-                requisition.Width = Math.Max (0, child_requisition.Width);
-                requisition.Height = child_requisition.Height;
-            } else {
-                requisition.Width = 0;
-                requisition.Height = 0;
-            }
-            
-            // Add the frame border
-            requisition.Width += (int)BorderWidth * 2 + MarginLeft + MarginRight;
-            requisition.Height += (int)BorderWidth * 2 + MarginTop + MarginBottom;
-        }
+		protected override void OnGetPreferredHeight (out int minimalHeight, out int naturalHeight)
+		{
+			var height = 0;
+			if (child != null && child.Visible) {
+				// Add the child's width/height        
+				child.GetPreferredHeight (out height, out height);
+			}
+
+			// Add the frame border
+			height += (int)BorderWidth * 2 + MarginTop + MarginBottom;
+			minimalHeight = naturalHeight = height;
+		}
+
+		protected override void OnGetPreferredWidth (out int minimalWidth, out int naturalWidth)
+		{
+			var width = 0;
+			if (child != null && child.Visible) {
+				// Add the child's width/height        
+				child.GetPreferredWidth (out width, out width);
+				width = Math.Max (0, width);
+			}
+
+			// Add the frame border
+			width += (int)BorderWidth * 2 + MarginLeft + MarginRight;
+			minimalWidth = naturalWidth = width;
+		}
 
         protected override void OnSizeAllocated (Gdk.Rectangle allocation)
         {

@@ -101,12 +101,12 @@ namespace Banshee.Gui.Widgets
         
         private void Show ()
         {
-            AnimateDouble ("Opacity").To (1).Repeat (1).Start ();
+            Animate ("Opacity").To (1).Repeat (1).Start ();
         }
         
         private void Hide ()
         {
-            AnimateDouble ("Opacity").To (0).Repeat (1).Start ();
+            Animate ("Opacity").To (0).Repeat (1).Start ();
         }
         
         private void StartIdleTimeout ()

@@ -51,7 +51,7 @@ namespace Banshee.Gui.Widgets
         
         protected override void OnRealized ()
         {
-            WidgetFlags |= WidgetFlags.Realized | WidgetFlags.NoWindow;
+            IsRealized = true;
             
             GdkWindow = Parent.GdkWindow;
             
@@ -61,7 +61,7 @@ namespace Banshee.Gui.Widgets
                 Y = Allocation.Y,
                 Width = Allocation.Width,
                 Height = Allocation.Height,
-                Wclass = WindowClass.InputOnly,
+                Wclass = WindowWindowClass.InputOnly,
                 EventMask = (int)(
                     EventMask.ButtonPressMask |
                     EventMask.ButtonReleaseMask |
@@ -85,10 +85,10 @@ namespace Banshee.Gui.Widgets
         
         protected override void OnUnrealized ()
         {
-            WidgetFlags &= ~WidgetFlags.Realized;
+            IsRealized = false;
             
             input_window.UserData = IntPtr.Zero;
-            Hyena.Gui.GtkWorkarounds.WindowDestroy (input_window);
+            input_window.Destroy ();
             input_window = null;
             
             base.OnUnrealized ();
@@ -96,13 +96,13 @@ namespace Banshee.Gui.Widgets
         
         protected override void OnMapped ()
         {
-            WidgetFlags |= WidgetFlags.Mapped;
+            IsMapped = true;
             input_window.Show ();
         }
         
         protected override void OnUnmapped ()
         {
-            WidgetFlags &= ~WidgetFlags.Mapped;
+            IsMapped = false;
             input_window.Hide ();
         }
         
@@ -186,19 +186,20 @@ namespace Banshee.Gui.Widgets
 
 #region UI/Text
 
-        protected override void OnSizeRequested (ref Gtk.Requisition requisition)
-        {
-            layout.GetPixelSize (out layout_width, out layout_height);
-            requisition.Width = layout_width;
-            requisition.Height = layout_height;
-        }
+		protected override void OnGetPreferredHeight (out int minimalHeight, out int naturalHeight)
+		{
+			layout.GetPixelSize (out layout_width, out layout_height);
+			minimalHeight = naturalHeight = layout_height;
+		}
 
-        protected override bool OnExposeEvent (Gdk.EventExpose evnt)
-        {
-            if (evnt.Window != GdkWindow || State == StateType.Insensitive) {
-                return true;
-            }
-        
+		protected override void OnGetPreferredWidth (out int minimalWidth, out int naturalWidth)
+		{
+			layout.GetPixelSize (out layout_width, out layout_height);
+			minimalWidth = naturalWidth = layout_width;
+		}
+
+        protected override bool OnDrawn (Cairo.Context cr)
+        {        
             int x, y;
             
             x = Allocation.X + (int)Math.Round ((Allocation.Width - layout_width) / 2.0);
@@ -210,8 +211,8 @@ namespace Banshee.Gui.Widgets
                     x + layout_width - 4, y + layout_height - 2);
             }
             
-            Gtk.Style.PaintLayout (Style, GdkWindow, State, false, 
-                evnt.Area, this, null, x, y, layout);
+            Gtk.Style.PaintLayout (Style, cr, State, false, 
+                this, null, x, y, layout);
                 
             return true;
         }

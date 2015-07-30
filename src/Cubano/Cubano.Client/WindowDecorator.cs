@@ -264,8 +264,8 @@ namespace Hyena.Gui
             y = (int)eventY;
             
             while (current != window.GdkWindow) {
-                int cx, cy, cw, ch, cd;
-                current.GetGeometry (out cx, out cy, out cw, out ch, out cd);
+                int cx, cy, cw, ch;
+                current.GetGeometry (out cx, out cy, out cw, out ch);
                 x += cx;
                 y += cy;
                 current = current.Parent;

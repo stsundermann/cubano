@@ -57,11 +57,9 @@ namespace Banshee.Gui.Widgets
             base.OnRealized ();
         }
         
-        protected override bool OnExposeEvent (Gdk.EventExpose evnt)
+        protected override bool OnDrawn (Cairo.Context cr)
         {
-            using (var cr = Gdk.CairoHelper.Create (evnt.Window)) {
-                DrawShape (cr);
-            }
+            DrawShape (cr);
         
             return true;
         }

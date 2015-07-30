@@ -36,7 +36,7 @@ namespace Cubano.NowPlaying
 {
     public class CubanoVisualizer : IDisposable
     {
-        public class RenderRequestArgs : EventArgs
+        public class RenderRequestArgs : System.EventArgs
         {
             private Gdk.Rectangle damage;
             public Gdk.Rectangle Damage {
@@ -148,7 +148,7 @@ namespace Cubano.NowPlaying
         
         private void RequestRender ()
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            Banshee.ServiceStack.Application.Invoke (delegate {
                 OnRenderRequest ();
             });
         }

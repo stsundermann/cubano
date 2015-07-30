@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using Gtk;
 using Mono.Unix;
 
+using Hyena;
 using Hyena.Data;
 using Hyena.Data.Gui;
 using Hyena.Widgets;
@@ -73,7 +74,7 @@ namespace Cubano.Client
             NoShowAll = true;
             
             ServiceManager.SourceManager.ActiveSourceChanged += delegate {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                Banshee.ServiceStack.Application.Invoke (delegate {
                     browser_container.Visible = ActiveSourceCanHasBrowser;
                 });
             };
@@ -100,7 +101,7 @@ namespace Cubano.Client
             ScrolledWindow window = null;
 
             //if (!Banshee.Base.ApplicationContext.CommandLine.Contains ("no-smooth-scroll")) {
-            if (Banshee.Base.ApplicationContext.CommandLine.Contains ("smooth-scroll")) {
+            if (Hyena.ApplicationContext.CommandLine.Contains ("smooth-scroll")) {
                 window = new SmoothScrolledWindow ();
             } else {
                 window = new ScrolledWindow ();

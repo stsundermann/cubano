@@ -36,11 +36,11 @@ namespace Cubano.NowPlaying
         
         public CubanoClutterVisualizer ()
         {
-            Color = new Color (0, 0, 0, 0);
+            Color = Color.New (0, 0, 0, 0);
             visualizer.RenderRequest += OnVisualizerRenderRequest;
         }
         
-        private void OnVisualizerRenderRequest (object o, EventArgs args)
+        private void OnVisualizerRenderRequest (object o, System.EventArgs args)
         {
             QueueRedraw ();
         }
@@ -65,7 +65,7 @@ namespace Cubano.NowPlaying
                     xc += x_ofs;
                     r = Height * visualizer.RenderPoints[i];
                     
-                    Cogl.Path.Ellipse (xc, yc, r, r);
+                    //Cogl.Path.Ellipse (xc, yc, r, r);
                     
                     if (r > 0) {
                         min_x = Math.Min (min_x, xc - r);
@@ -76,7 +76,7 @@ namespace Cubano.NowPlaying
                 
                 Cogl.General.SetSourceColor4ub (255, 128, 0, 
                     (byte)((visualizer.RenderLoudness * 60) + 120));
-                Cogl.Path.Fill ();
+                //Cogl.Path.Fill ();
                 
                 Cogl.General.PopMatrix ();
             }

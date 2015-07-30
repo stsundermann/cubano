@@ -133,7 +133,7 @@ namespace Banshee.Gui.Widgets
             Width = Height = ImageSize;
         }
         
-        protected override bool OnPropertyChange (string property, object value)
+        /*protected override bool OnPropertyChange (string property, object value)
         {
             switch (property) {
                 case "ImageSize":
@@ -142,7 +142,7 @@ namespace Banshee.Gui.Widgets
             }
             
             return base.OnPropertyChange (property, value);
-        }
+        }*/
         
         public double ShadowSize {
             get { return GetValue<double> ("ShadowSize"); }

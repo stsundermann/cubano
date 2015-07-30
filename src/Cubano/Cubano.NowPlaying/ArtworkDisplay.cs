@@ -111,11 +111,9 @@ namespace Cubano.NowPlaying
         {
             SetSource (ServiceManager.SourceManager.MusicLibrary);
             
-            cell_select_timeline = new Timeline () {
-                Duration = 500,
-                Loop = true
-            };
-            
+            cell_select_timeline = new Timeline (500);
+            cell_select_timeline.Loop = true;
+
             cell_select_timeline.NewFrame += OnCellSelectTimelineNewFrame;
             
             allocation_seed = random.Next ();
@@ -146,10 +144,15 @@ namespace Cubano.NowPlaying
             for (int i = 0; i < actor_cache.MaxCount; i++) {
                 var slot = new Clone (null) {
                     Parent = this,
-                    IsVisible = true
+                    Visible = true
                 };
-                
-                slot.Allocate (new ActorBox (pixel_x, pixel_y, size, size));
+
+                slot.Allocate (new ActorBox () {
+                    X1 = pixel_x, 
+                    Y1 = pixel_y,
+                    X2 = size,
+                    Y2 = size
+                }, AllocationFlags.DelegateLayout);
                 
                 grid[x, y] = slot;
                 
@@ -246,8 +249,13 @@ namespace Cubano.NowPlaying
                 }
             }
             
-            var cell_source = new Clone (GetRandomActor ()) { IsVisible = true, Parent = this };
-            cell_source.Allocate (cell_target.AllocationGeometry);
+            var cell_source = new Clone (GetRandomActor ()) { Visible = true, Parent = this };
+            cell_source.Allocate (new ActorBox() {
+                X1 = cell_target.AllocationGeometry.X,
+                Y1 = cell_target.AllocationGeometry.Y,
+                X2 = cell_target.AllocationGeometry.Width,
+                Y2 = cell_target.AllocationGeometry.Height
+            }, AllocationFlags.DelegateLayout);
             
             waiting_for_slot.Insert (0, cell_source);
             history_slots.Enqueue (cell_source);
@@ -264,6 +272,7 @@ namespace Cubano.NowPlaying
                     QueueRedraw ();
                  })
                 .Animate ("opacity", 0);
+                
         }
 
         public void Pause ()
@@ -323,7 +332,7 @@ namespace Cubano.NowPlaying
             QueueRelayout ();
         }
 
-        private void OnModelReloaded (object o, EventArgs args)
+        private void OnModelReloaded (object o, System.EventArgs args)
         {
             QueueRelayout ();
         }
@@ -342,8 +351,12 @@ namespace Cubano.NowPlaying
                 var actor = GetActorAtIndex ((rand ?? random).Next (0, Model.Count - 1));
                 if (actor != null) {
                     if (actor.AllocationGeometry.Width == 0 || actor.AllocationGeometry.Height == 0) {
-                        actor.Allocate (new ActorBox (0, 0, 
-                            (float)ActorSize, (float)ActorSize));
+                        actor.Allocate (new ActorBox () {
+                            X1 = 0,
+                            Y1 = 0,
+                            X2 = (float) ActorSize,
+                            Y2 = (float) ActorSize
+                        }, AllocationFlags.DelegateLayout);
                     }
                     return actor;
                 }

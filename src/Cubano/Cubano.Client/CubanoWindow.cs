@@ -82,7 +82,13 @@ namespace Cubano.Client
         {
         }
         
-        public CubanoWindow () : base ("Cubano", "cubano.window", 1000, 500)
+        public CubanoWindow () : base ("Cubano", new WindowConfiguration(
+            WindowConfiguration.NewWidthSchema("cubano.window", 1000),
+            WindowConfiguration.NewHeightSchema("cubano.window", 500),
+            WindowConfiguration.NewXPosSchema("cubano.window"),
+            WindowConfiguration.NewYPosSchema("cubano.window"),
+            WindowConfiguration.NewMaximizedSchema("cubano.window")
+        ))
         {
         }
         
@@ -104,7 +110,7 @@ namespace Cubano.Client
         
 #region System Overrides 
         
-        public override void Dispose ()
+        public new void Dispose ()
         {
             lock (this) {
                 Hide ();
@@ -147,7 +153,7 @@ namespace Cubano.Client
         {
             primary_vbox.PackStart (header = new CubanoHeader (), false, false, 0);
             header.Toolbar.ButtonPressEvent += (o, e) => window_decorator.CheckWindow = false;
-            header.Toolbar.ExposeEvent += OnCubanoToolbarExposeEvent;
+            header.Toolbar.Drawn += OnCubanoToolbarExposeEvent;
         }
         
         private void BuildViews ()
@@ -277,7 +283,7 @@ namespace Cubano.Client
         private TrackListModel previous_track_model = null;
         private void OnActiveSourceChanged (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            Banshee.ServiceStack.Application.Invoke (delegate {
                 Source source = ServiceManager.SourceManager.ActiveSource;
     
                 header.SearchEntry.SearchSensitive = source != null && source.CanSearch;
@@ -327,7 +333,7 @@ namespace Cubano.Client
         private void OnSourcePropertyChanged (object o, PropertyChangeEventArgs args)
         {
             if (args.PropertyName == "Nereid.SourceContents") {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                Banshee.ServiceStack.Application.Invoke (delegate {
                     UpdateSourceContents (previous_source);
                 });
             }
@@ -396,7 +402,7 @@ namespace Cubano.Client
         private void OnSourceUpdated (SourceEventArgs args)
         {
             if (args.Source == ServiceManager.SourceManager.ActiveSource) {
-                Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+                Banshee.ServiceStack.Application.Invoke (delegate {
                     UpdateSourceInformation ();
                 });
             }
@@ -508,7 +514,7 @@ namespace Cubano.Client
 
         private void HandleTrackModelReloaded (object sender, EventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (UpdateSourceInformation);
+            Banshee.ServiceStack.Application.Invoke (UpdateSourceInformation);
         }
 
         private void UpdateSourceInformation ()
@@ -526,28 +532,28 @@ namespace Cubano.Client
 
 #region Cubano Theme/UI
 
-        private void OnCubanoToolbarExposeEvent (object o, ExposeEventArgs args)
+        private void OnCubanoToolbarExposeEvent (object o, DrawnArgs args)
         {
             Toolbar toolbar = (Toolbar)o;
 
             // This forces the toolbar to look like it's just a regular part
             // of the window since the stock toolbar look makes Banshee look ugly.
-            RenderBackground (toolbar.GdkWindow, args.Event.Region);
+            RenderBackground (args.Cr);
 
             // Manually expose all the toolbar's children
             foreach (Widget child in toolbar.Children) {
-                toolbar.PropagateExpose (child, args.Event);
+                toolbar.PropagateDraw (child, args.Cr);
             }
         }
         
-        protected override bool OnExposeEvent (Gdk.EventExpose evnt)
+        protected override bool OnDrawn (Cairo.Context cr)
         {
             if (!Visible || !IsMapped) {
                 return true;
             }
             
-            RenderBackground (evnt.Window, evnt.Region);
-            PropagateExpose (Child, evnt);
+            RenderBackground (cr);
+            PropagateDraw (Child, cr);
             return true;
         }
         
@@ -558,7 +564,7 @@ namespace Cubano.Client
         private struct Circle { public double X; public double Y; public double R; public double A; }
         private Circle [] circles;
         
-        private void RenderBackground (Gdk.Window window, Gdk.Region region)
+        private void RenderBackground (Cairo.Context cr)
         {
             rand = rand ?? new Random ();
         
@@ -574,8 +580,6 @@ namespace Cubano.Client
                 }
             }
             
-            Cairo.Context cr = Gdk.CairoHelper.Create (window);
-
             foreach (Gdk.Rectangle damage in region.GetRectangles ()) {
                 cr.Rectangle (damage.X, damage.Y, damage.Width, damage.Height);
                 cr.Clip ();

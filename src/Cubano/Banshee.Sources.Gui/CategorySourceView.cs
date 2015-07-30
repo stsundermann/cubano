@@ -73,7 +73,7 @@ namespace Banshee.Sources.Gui
             Spacing = 15;
         }
         
-        public override void Dispose ()
+        public void Dispose ()
         {
             ServiceManager.SourceManager.SourceAdded -= OnSourceUpdated;
             ServiceManager.SourceManager.SourceRemoved -= OnSourceUpdated;
@@ -83,14 +83,14 @@ namespace Banshee.Sources.Gui
         
         private void OnSourceUpdated (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            Banshee.ServiceStack.Application.Invoke (delegate {
                 UpdateSources ();
             });
         }
         
         private void OnActiveSourceChanged (SourceEventArgs args)
         {
-            Banshee.Base.ThreadAssist.ProxyToMain (delegate {
+            Banshee.ServiceStack.Application.Invoke (delegate {
                 foreach (var label in labels) {
                     label.IsSelected = label.Source == args.Source;
                 }

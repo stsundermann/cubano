@@ -102,7 +102,7 @@ namespace Cubano.Client
             g.Destroy ();
         }
         
-        public override void DrawColumnHighlight (Cairo.Context cr, Gdk.Rectangle alloc, Cairo.Color color)
+        public void DrawColumnHighlight (Cairo.Context cr, Gdk.Rectangle alloc, Cairo.Color color)
         {
             Cairo.Color light_color = CairoExtensions.ColorShade (color, 1.6);
             Cairo.Color dark_color = CairoExtensions.ColorShade (color, 1.3);
@@ -117,7 +117,7 @@ namespace Cubano.Client
             grad.Destroy ();
         }
 
-        public override void DrawHeaderBackground (Cairo.Context cr, Gdk.Rectangle alloc)
+        public void DrawHeaderBackground (Cairo.Context cr, Gdk.Rectangle alloc)
         {
             /*Cairo.Color gtk_background_color = Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
             Cairo.Color light_color = CairoExtensions.ColorShade (gtk_background_color, 1.1);
@@ -148,7 +148,7 @@ namespace Cubano.Client
             cr.Stroke ();
         }
         
-        public override void DrawHeaderSeparator (Cairo.Context cr, Gdk.Rectangle alloc, int x)
+        public void DrawHeaderSeparator (Cairo.Context cr, Gdk.Rectangle alloc, int x)
         {
             Cairo.Color gtk_background_color = Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
             Cairo.Color dark_color = CairoExtensions.ColorShade (gtk_background_color, 0.80);
@@ -173,7 +173,7 @@ namespace Cubano.Client
             cr.Antialias = Cairo.Antialias.Default;
         }
         
-        public override void DrawListBackground (Context cr, Gdk.Rectangle alloc, Color color)
+        public void DrawListBackground (Context cr, Gdk.Rectangle alloc, Color color)
         {
             /*color.A = Context.FillAlpha;
             cr.Color = color;
@@ -181,7 +181,7 @@ namespace Cubano.Client
             cr.Fill ();*/
         }
         
-        public override void DrawRowSelection (Cairo.Context cr, int x, int y, int width, int height,
+        public void DrawRowSelection (Cairo.Context cr, int x, int y, int width, int height,
             bool filled, bool stroked, Cairo.Color color, CairoCorners corners)
         {
             color.A *= 0.85;
@@ -214,7 +214,7 @@ namespace Cubano.Client
             }
         }
         
-        public override void DrawRowRule(Cairo.Context cr, int x, int y, int width, int height)
+        public void DrawRowRule(Cairo.Context cr, int x, int y, int width, int height)
         {
             /*cr.Color = new Cairo.Color (rule_color.R, rule_color.G, rule_color.B, Context.FillAlpha);
             cr.Rectangle (x, y, width, height);

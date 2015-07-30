@@ -55,7 +55,7 @@ namespace Cubano.Client
             return lh + 8;
         }
         
-        public override void Render (CellContext context, StateType state, double cellWidth, double cellHeight)
+        public override void Render (CellContext context, /*StateType state,*/ double cellWidth, double cellHeight)
         {
             if (BoundObject == null) {
                 return;

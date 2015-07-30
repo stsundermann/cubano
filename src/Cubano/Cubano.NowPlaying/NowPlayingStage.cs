@@ -45,8 +45,8 @@ namespace Cubano.NowPlaying
         {
             VideoTexture = video_texture;
             
-            Add (VideoTexture);
-            Add (artwork_display = new ArtworkDisplay () { IsVisible = true });
+            AddChild (VideoTexture);
+            AddChild (artwork_display = new ArtworkDisplay () { Visible = true });
             
             ConfigureVideo ();
         }
@@ -71,7 +71,12 @@ namespace Cubano.NowPlaying
         {
             base.OnAllocate (box, flags);
             
-            artwork_display.Allocate (new ActorBox (0, 0, Width, Height), flags);
+            artwork_display.Allocate (new ActorBox () {
+                X1 = 0,
+                Y1 = 0,
+                X2 = Width,
+                Y2 = Height
+            }, flags);
             
             float video_width, video_height;
             VideoTexture.GetSize (out video_width, out video_height);
@@ -86,7 +91,7 @@ namespace Cubano.NowPlaying
 
         private void ConfigureVideo ()
         {
-            VideoTexture.SizeChange += OnVideoTextureSizeChange;
+            VideoTexture.SizeChanged += OnVideoTextureSizeChange;
             
             ServiceManager.PlayerEngine.ConnectEvent (OnPlayerEvent,
                 PlayerEvent.StartOfStream |
@@ -95,7 +100,7 @@ namespace Cubano.NowPlaying
             ToggleVideoVisibility ();
         }
         
-        private void OnVideoTextureSizeChange (object o, SizeChangeArgs args)
+        private void OnVideoTextureSizeChange (object o, SizeChangedArgs args)
         {
             AllocateVideoTexture (args.Width, args.Height);
         }

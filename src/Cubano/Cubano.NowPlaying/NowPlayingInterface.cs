@@ -38,6 +38,7 @@ using Banshee.Gui;
 using Banshee.Sources.Gui;
 
 using Clutter;
+using Clutter.GTK;
 
 namespace Cubano.NowPlaying
 {
@@ -49,7 +50,7 @@ namespace Cubano.NowPlaying
 
         private Embed display;
         private NowPlayingStage stage;
-        private Texture video_texture;
+        private Clutter.Texture video_texture;
         
         public NowPlayingInterface ()
         {
@@ -62,7 +63,7 @@ namespace Cubano.NowPlaying
                     throw new ApplicationException ("Banshee GStreamer engine does not have Clutter support");
                 }
 
-                video_texture = new Texture () { SyncSize = false };
+                video_texture = new Clutter.Texture () { SyncSize = false };
                 clutter_engine.EnableClutterVideoSink (video_texture.Handle);
             };
             
@@ -98,10 +99,10 @@ namespace Cubano.NowPlaying
             // decrease startup time
             if (stage == null) {
                 stage = new NowPlayingStage (video_texture) {
-                    IsVisible = true
+                    Visible = true
                 };
-                display.Stage.Color = new Color (0, 0, 0);
-                display.Stage.Add (stage);
+                display.Stage.BackgroundColor = Color.New (0, 0, 0, 0xff);
+                display.Stage.AddChild (stage);
             }
             
             // The clutter embed gets reparented to the toplevel

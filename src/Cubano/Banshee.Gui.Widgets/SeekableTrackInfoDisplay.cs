@@ -48,8 +48,8 @@ namespace Banshee.Gui.Widgets
         private TextBlock seek_to;
         private TextBlock remaining;
         
-        private DoubleAnimation transition_animation;
-        private DoubleAnimation seek_to_animation;
+        private Animation transition_animation;
+        private Animation seek_to_animation;
         private uint transition_timeout;
         
         private int display_metadata_index;
@@ -78,8 +78,8 @@ namespace Banshee.Gui.Widgets
             });
             
             seek_to.Opacity = 0;
-            seek_to_animation = new DoubleAnimation ("Opacity");
-            seek_to_animation.Repeat (1);
+            seek_to_animation = new Animation ("Opacity");
+            seek_to_animation.Repeat = 1;
             
             seek_bar.PendingValueChanged += (o, e) => OnSeekPendingValueChanged (seek_bar.PendingValue);
             seek_bar.ValueChanged += (o, e) => OnSeekValueChanged (seek_bar.Value);
@@ -90,7 +90,7 @@ namespace Banshee.Gui.Widgets
         
         private void BuildTransitionAnimation ()
         {
-            transition_animation = new DoubleAnimation ("Opacity");
+            transition_animation = new Animation ("Opacity");
             transition_animation
                 .Throttle (250)
                 .Compose ((a, p) => {
