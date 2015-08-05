@@ -263,7 +263,7 @@ namespace Cubano.NowPlaying
                 history_slots.Dequeue ();
             }
 
-            cell_target.AnimationChain
+            /*cell_target.AnimationChain
                 .SetEasing (AnimationMode.EaseInQuad)
                 .SetDuration ((uint)random.Next (300, 1500))
                 .WhenFinished ((a) => {
@@ -271,7 +271,7 @@ namespace Cubano.NowPlaying
                     waiting_for_slot.Remove (cell_source);
                     QueueRedraw ();
                  })
-                .Animate ("opacity", 0);
+                .Animate ("opacity", 0);*/
                 
         }
 
@@ -281,9 +281,9 @@ namespace Cubano.NowPlaying
             cell_select_timeline.Pause ();
             
             foreach (var child in waiting_for_slot) {
-                if (child.AnimationChain.LastAnimation != null) {
+                /*if (child.AnimationChain.LastAnimation != null) {
                     child.AnimationChain.LastAnimation.Timeline.Stop ();
-                }
+                }*/
             }
             
             waiting_for_slot.Clear ();

@@ -62,30 +62,30 @@ namespace Banshee.Gui.Widgets
         
         private void ProbeComposited ()
         {
-            use_shape_extension = !CompositeUtils.IsComposited (Screen) || 
-                !CompositeUtils.SetRgbaColormap (this);
+            use_shape_extension = false; //!CompositeUtils.IsComposited (Screen) || 
+                //!CompositeUtils.SetRgbaColormap (this);
         }
         
         protected void ShapeWindow ()
         {
-            using (var bitmap = new Gdk.Pixbuf (Window,
-                Allocation.Width, Allocation.Height, 1)) {
+            using (var bitmap = new Gdk.Pixbuf (new byte[Allocation.Width * Allocation.Height],
+                Allocation.Width, Allocation.Height)) {
             
                 using (var cr = Gdk.CairoHelper.Create (Window)) {
                     DrawShape (cr);
                 }
                 
                 if (use_shape_extension) {
-                    ShapeCombineMask (null, 0, 0);
-                    ShapeCombineMask (bitmap, 0, 0);
+                    //ShapeCombineMask (null, 0, 0);
+                    //ShapeCombineMask (bitmap, 0, 0);
                 } else {
                     using (var cr = Gdk.CairoHelper.Create (GdkWindow)) {
                         DrawShape (cr);
                     }
 
                     try {
-                        CompositeUtils.InputShapeCombineMask (this, null, 0, 0);
-                        CompositeUtils.InputShapeCombineMask (this, bitmap, 0, 0);
+                        //CompositeUtils.InputShapeCombineMask (this, null, 0, 0);
+                        //CompositeUtils.InputShapeCombineMask (this, bitmap, 0, 0);
                     } catch {
                         Hyena.Log.Warning ("This GTK+ version does not support input shapes");
                     }

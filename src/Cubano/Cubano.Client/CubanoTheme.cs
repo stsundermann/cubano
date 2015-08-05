@@ -51,8 +51,11 @@ namespace Cubano.Client
         {
             base.OnColorsRefreshed ();
 
-            rule_color = CairoExtensions.ColorShade (ViewFill, 0.95);
-            border_color = Colors.GetWidgetColor (GtkColorClass.Dark, StateType.Active);
+
+            rule_color = new Cairo.Color ();
+            border_color = new Cairo.Color ();
+            //rule_color = CairoExtensions.ColorShade (ViewFill, 0.95);
+            //border_color = Colors.GetWidgetColor (GtkColorClass.Dark, StateType.Active);
         }
 
         public override void DrawFrameBackground (Cairo.Context cr, Gdk.Rectangle alloc, Cairo.Color color, Cairo.Pattern pattern)
@@ -138,10 +141,10 @@ namespace Cubano.Client
             cr.Rectangle (alloc.X, alloc.Bottom, alloc.Width, BorderWidth);
             cr.Fill ();
             grad.Destroy ();*/
-            
-            Cairo.Color gtk_background_color = Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
+
+            Cairo.Color gtk_background_color = new Cairo.Color (); //Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
             Cairo.Color dark_color = CairoExtensions.ColorShade (gtk_background_color, 0.80);
-            cr.Color = dark_color;
+            cr.SetSourceColor(dark_color);
             cr.MoveTo (alloc.X, alloc.Bottom + 0.5);
             cr.LineTo (alloc.Right, alloc.Bottom + 0.5);
             cr.LineWidth = 1.0;
@@ -150,7 +153,7 @@ namespace Cubano.Client
         
         public void DrawHeaderSeparator (Cairo.Context cr, Gdk.Rectangle alloc, int x)
         {
-            Cairo.Color gtk_background_color = Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
+            Cairo.Color gtk_background_color = new Cairo.Color (); //Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
             Cairo.Color dark_color = CairoExtensions.ColorShade (gtk_background_color, 0.80);
             Cairo.Color light_color = CairoExtensions.ColorShade (gtk_background_color, 1.1);
             

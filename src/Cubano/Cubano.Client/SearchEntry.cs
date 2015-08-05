@@ -115,7 +115,7 @@ namespace Cubano.Client
 
             Query = String.IsNullOrEmpty (query) ? String.Empty : query + ":";
 
-            IEditable editable = InnerEntry as IEditable;
+            IEditable editable = null; //InnerEntry as IEditable;
             if (editable != null) {
                 editable.Position = Query.Length;
             }

@@ -28,11 +28,7 @@ SOURCES =  \
 	Cubano.NowPlaying/CubanoVisualizer.cs \
 	Cubano.NowPlaying/NowPlayingInterface.cs \
 	Cubano.NowPlaying/NowPlayingSource.cs \
-	Cubano.NowPlaying/NowPlayingStage.cs \
-	Hyena.Gui.Canvas/AnimationManager.cs \
-	Hyena.Gui.Canvas/CanvasItem.cs \
-	Hyena.Gui.Canvas/FixedPanel.cs \
-	Hyena.Gui.Canvas/Panel.cs
+	Cubano.NowPlaying/NowPlayingStage.cs
 
 RESOURCES =
 
@@ -46,13 +42,12 @@ REFERENCES_PACKAGES =  \
 	-pkg:clutter-sharp \
 	-pkg:glib-sharp-3.0 \
 	-pkg:gtk-sharp-3.0 \
-	-pkg:taglib-sharp \
-	-r:Mono.Cairo
+	-pkg:taglib-sharp
 
 RESOURCES_BUILD = $(foreach res, $(RESOURCES), \
 	-resource:$(notdir $(res)),$(res))
 
-REFERENCES_ASSEMBLIES = ../../bin/Mono.Addins.dll
+REFERENCES_ASSEMBLIES =
 REFERENCES_ASSEMBLIES_BUILD = $(foreach ref, $(REFERENCES_ASSEMBLIES), \
 	-r:$(srcdir)/$(ref))
 

@@ -75,7 +75,7 @@ namespace Banshee.Gui.Widgets
         
         public CoverArtDisplay ()
         {
-            InstallProperty<double> ("ImageSize", 60);
+            ImageSize = 60;
             UpdateImageSize ();
             
             Margin = new Thickness (5);
@@ -119,12 +119,12 @@ namespace Banshee.Gui.Widgets
                 update_image.Brush.Load (track, image_size);
                 Children.Move (update_image, 1);
                 
-                update_image.AnimateDouble ("Opacity").From (0).To (1).Repeat (1).Compose ((a, p) => {
+                /*update_image.AnimateDouble ("Opacity").From (0).To (1).Repeat (1).Compose ((a, p) => {
                     if (p == 1) {
                         current_image.Opacity = 0;
                     }
                     return Choreographer.Compose (p, Easing.QuadraticInOut);
-                }).Start ();
+                }).Start ();*/
             }
         }
         
@@ -143,15 +143,15 @@ namespace Banshee.Gui.Widgets
             
             return base.OnPropertyChange (property, value);
         }*/
-        
+
+        [GLib.Property("shadow-size")]
         public double ShadowSize {
-            get { return GetValue<double> ("ShadowSize"); }
-            set { SetValue<double> ("ShadowSize", value); }
+            get; set;
         }
-        
+
+        [GLib.Property("image-size")]
         public double ImageSize {
-            get { return GetValue<double> ("ImageSize"); }
-            set { SetValue<double> ("ImageSize", value); }
+            get; set;
         }
     }
 }

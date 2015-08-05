@@ -78,9 +78,9 @@ namespace Banshee.Gui.Widgets
             });
             
             seek_to.Opacity = 0;
-            seek_to_animation = new Animation ("Opacity");
+            seek_to_animation = new Animation ();//"Opacity");
             seek_to_animation.Repeat = 1;
-            
+
             seek_bar.PendingValueChanged += (o, e) => OnSeekPendingValueChanged (seek_bar.PendingValue);
             seek_bar.ValueChanged += (o, e) => OnSeekValueChanged (seek_bar.Value);
             
@@ -90,8 +90,8 @@ namespace Banshee.Gui.Widgets
         
         private void BuildTransitionAnimation ()
         {
-            transition_animation = new Animation ("Opacity");
-            transition_animation
+            //transition_animation = new Animation ("Opacity");
+            /*transition_animation
                 .Throttle (250)
                 .Compose ((a, p) => {
                     var opacity = a.StartState == 0 ? p : 1 - p;
@@ -108,7 +108,7 @@ namespace Banshee.Gui.Widgets
                     }
 
                     return opacity * text_opacity;
-                }).Ease (Easing.QuadraticInOut);
+                }).Ease (Easing.QuadraticInOut);*/
         }
         
         public void ResetTransitionTimeout ()
@@ -135,7 +135,7 @@ namespace Banshee.Gui.Widgets
         
         private bool OnTransitionTimeout ()
         {
-            title.Animate (transition_animation).From (1).To (0).Start ();
+            //title.Animate (transition_animation).From (1).To (0).Start ();
             return true;
         }
         

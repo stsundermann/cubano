@@ -12,6 +12,7 @@ namespace Cubano.Client
     {
         public static void Main (string [] args)
         {
+            Paths.ApplicationName = "cubano";
             string addin_path = ApplicationContext.CommandLine.Contains ("uninstalled") 
                 ? "." : Paths.Combine (Paths.ApplicationData, "cubano");
 

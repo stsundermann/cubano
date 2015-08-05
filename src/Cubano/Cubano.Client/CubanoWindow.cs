@@ -579,48 +579,49 @@ namespace Cubano.Client
                     };
                 }
             }
-            
-            foreach (Gdk.Rectangle damage in region.GetRectangles ()) {
-                cr.Rectangle (damage.X, damage.Y, damage.Width, damage.Height);
-                cr.Clip ();
-                
-                cr.Translate (Allocation.X, Allocation.Y);
-                cr.Rectangle (0, 0, Allocation.Width, Allocation.Height);
-                
-                if (render_gradient) {
-                    var grad = new Cairo.LinearGradient (0, 0, 0, Allocation.Height);
-                    grad.AddColorStop (0.7, CairoExtensions.GdkColorToCairoColor (Style.Base (StateType.Normal)));
-                    grad.AddColorStop (1, CairoExtensions.GdkColorToCairoColor (Style.Background (StateType.Normal)));
-                    
-                    cr.Pattern = grad;
-                    cr.Fill ();
-                    grad.Destroy ();
-                 
-                    foreach (var circle in circles) {
-                        cr.Color = new Cairo.Color (0, 0, 0, circle.A);
-                        cr.Arc (circle.X + circle.R, circle.Y + circle.R, circle.R, 0, 2 * Math.PI);
-                        cr.Fill ();
-                    }
-                } else {
-                    cr.Color = new Cairo.Color (1, 1, 1);
-                    cr.Fill ();
-                }
 
-                if (window_decorator != null) {
-                    window_decorator.Render (cr);
-                }
+            Gdk.Rectangle damage = new Gdk.Rectangle();
+
+            cr.RenderDamage (damage);
+            cr.Rectangle (damage.X, damage.Y, damage.Width, damage.Height);
+            cr.Clip ();
+            
+            cr.Translate (Allocation.X, Allocation.Y);
+            cr.Rectangle (0, 0, Allocation.Width, Allocation.Height);
+            
+            if (render_gradient) {
+                var grad = new Cairo.LinearGradient (0, 0, 0, Allocation.Height);
+                grad.AddColorStop (0.7, CairoExtensions.GdkColorToCairoColor (Style.Base (StateType.Normal)));
+                grad.AddColorStop (1, CairoExtensions.GdkColorToCairoColor (Style.Background (StateType.Normal)));
                 
-                if (render_debug) {
-                    cr.LineWidth = 1.0;
-                    cr.Color = CairoExtensions.RgbToColor (
-                        (uint)rand.Next (0, 0xffffff));
-                    cr.Rectangle (damage.X + 0.5, damage.Y + 0.5, damage.Width - 1, damage.Height - 1);
-                    cr.Stroke ();
+                cr.Pattern = grad;
+                cr.Fill ();
+                grad.Destroy ();
+             
+                foreach (var circle in circles) {
+                    cr.Color = new Cairo.Color (0, 0, 0, circle.A);
+                    cr.Arc (circle.X + circle.R, circle.Y + circle.R, circle.R, 0, 2 * Math.PI);
+                    cr.Fill ();
                 }
-                
-                cr.ResetClip ();
+            } else {
+                cr.Color = new Cairo.Color (1, 1, 1);
+                cr.Fill ();
+            }
+
+            if (window_decorator != null) {
+                window_decorator.Render (cr);
             }
             
+            if (render_debug) {
+                cr.LineWidth = 1.0;
+                cr.Color = CairoExtensions.RgbToColor (
+                    (uint)rand.Next (0, 0xffffff));
+                cr.Rectangle (damage.X + 0.5, damage.Y + 0.5, damage.Width - 1, damage.Height - 1);
+                cr.Stroke ();
+            }
+            
+            cr.ResetClip ();
+
             CairoExtensions.DisposeContext (cr);
         }
         

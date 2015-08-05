@@ -80,12 +80,14 @@ namespace Cubano.Client
             context.Layout.GetPixelSize (out text_width, out text_height);
             
             context.Context.MoveTo (4, ((int)cellHeight - text_height) / 2);
-            Cairo.Color color = context.Theme.Colors.GetWidgetColor (
-                context.TextAsForeground ? GtkColorClass.Foreground : GtkColorClass.Text, state);
-            color.A = (!context.Sensitive) ? 0.3 : 1.0;
-            context.Context.Color = color;
+
+            Cairo.Color color = context.Theme.TextMidColor;
+            //Cairo.Color color = context.Theme.Colors.GetWidgetColor (
+            //    context.TextAsForeground ? GtkColorClass.Foreground : GtkColorClass.Text, state);
+            //color.A = (!context.Sensitive) ? 0.3 : 1.0;
+            context.Context.SetSourceColor(color);
             
-            PangoCairoHelper.ShowLayout (context.Context, context.Layout);
+            //PangoCairoHelper.ShowLayout (context.Context, context.Layout);
         }
 
         public Pango.Weight FontWeight {

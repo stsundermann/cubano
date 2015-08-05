@@ -128,7 +128,7 @@ namespace Banshee.Gui.Widgets
             }
             
             pending_state = State;
-            State = StateType.Prelight;
+            //State = StateType.Prelight;
             
             return base.OnEnterNotifyEvent (evnt);
         }
@@ -136,7 +136,7 @@ namespace Banshee.Gui.Widgets
         protected override bool OnLeaveNotifyEvent (Gdk.EventCrossing evnt)
         {
             if (CanActivate) {
-                State = pending_state;
+                //State = pending_state;
             }
             
             return base.OnLeaveNotifyEvent (evnt);
@@ -206,9 +206,11 @@ namespace Banshee.Gui.Widgets
             y = Allocation.Y + (int)Math.Round ((Allocation.Height - layout_height) / 2.0);
             
             if (HasFocus) {
-                GdkWindow.DrawLine (Style.ForegroundGC (StateType.Normal), 
+                cr.MoveTo (new Cairo.PointD (x + 2, y + 2));
+                cr.LineTo (new Cairo.PointD (x + layout_width - 4, y + layout_height - 2));
+                /*(Style.ForegroundGC (StateType.Normal), 
                     x + 2, y + layout_height - 2,
-                    x + layout_width - 4, y + layout_height - 2);
+                    x + layout_width - 4, y + layout_height - 2);*/
             }
             
             Gtk.Style.PaintLayout (Style, cr, State, false, 
@@ -231,7 +233,7 @@ namespace Banshee.Gui.Widgets
             base_point_size = Style.FontDescription.Size;
             
             ModifyFg (StateType.Selected, Style.Text (StateType.Normal));
-            ModifyFg (StateType.Normal, Hyena.Gui.Theming.GtkTheme.GetGdkTextMidColor (this));
+            ModifyFg (StateType.Normal, new Gdk.Color());
             
             CreateLayout ();
             UpdateLayout ();
@@ -294,13 +296,13 @@ namespace Banshee.Gui.Widgets
                 if (is_selected) {
                     pending_state = StateType.Selected;
                     if (State != StateType.Prelight) {
-                        State = StateType.Selected;
+                        //State = StateType.Selected;
                     }
                     CurrentFontSizeEm = ActiveFontSizeEm;
                 } else {
                     pending_state = StateType.Normal;
                     if (State != StateType.Prelight) {
-                        State = StateType.Normal;
+                        //State = StateType.Normal;
                     }
                     CurrentFontSizeEm = DefaultFontSizeEm;
                 }

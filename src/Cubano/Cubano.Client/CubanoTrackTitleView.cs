@@ -52,7 +52,7 @@ namespace Cubano.Client
             
             ColumnController = column_controller;
             
-            RowHeightProvider = renderer.ComputeRowHeight;
+            //RowHeightProvider = renderer.ComputeRowHeight;
             HeaderVisible = false;
         }
     }
