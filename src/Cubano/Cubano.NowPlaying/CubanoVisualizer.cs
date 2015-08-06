@@ -324,10 +324,10 @@ namespace Cubano.NowPlaying
             c.A = RenderLoudness / 2;
             grad.AddColorStop (1, c);
             
-            cr.Pattern = grad;
+            cr.SetSource (grad);
             cr.Fill ();
             
-            grad.Destroy ();
+            grad.Dispose ();
         }
     }
 }

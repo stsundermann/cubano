@@ -51,11 +51,12 @@ namespace Cubano.Client
         {
             base.OnColorsRefreshed ();
 
+            if (widget == null) {
+                return;
+            }
 
-            rule_color = new Cairo.Color ();
-            border_color = new Cairo.Color ();
-            //rule_color = CairoExtensions.ColorShade (ViewFill, 0.95);
-            //border_color = Colors.GetWidgetColor (GtkColorClass.Dark, StateType.Active);
+            rule_color = CairoExtensions.ColorShade (CairoExtensions.GdkRGBAToCairoColor (widget.StyleContext.GetBackgroundColor (StateFlags.Normal)), 0.95);
+            border_color = CairoExtensions.GdkRGBAToCairoColor (widget.StyleContext.GetBorderColor (StateFlags.Normal));
         }
 
         public override void DrawFrameBackground (Cairo.Context cr, Gdk.Rectangle alloc, Cairo.Color color, Cairo.Pattern pattern)
@@ -67,9 +68,9 @@ namespace Cubano.Client
         
             color.A = Context.FillAlpha;
             if (pattern != null) {
-                cr.Pattern = pattern;
+                cr.SetSource (pattern);
             } else {
-                cr.Color = color;
+                cr.SetSourceColor (color);
             }
             cr.Rectangle (alloc.X, alloc.Y, alloc.Width, alloc.Height);
             cr.Fill ();
@@ -79,7 +80,7 @@ namespace Cubano.Client
         {
             cr.LineWidth = BorderWidth;
             border_color.A = 0.3;
-            cr.Color = border_color;
+            cr.SetSourceColor (border_color);
             
             double offset = (double)BorderWidth / 2.0;
             double w = Math.Max (0, alloc.Width * 0.75);
@@ -96,13 +97,13 @@ namespace Cubano.Client
             g.AddColorStop (0.6, border_color);
             g.AddColorStop (1, transparent);
             
-            cr.Pattern = g;
+            cr.SetSource (g);
             
             cr.MoveTo (x, y);
             cr.LineTo (x + w, y);
             cr.Stroke ();
             
-            g.Destroy ();
+            g.Dispose ();
         }
         
         public void DrawColumnHighlight (Cairo.Context cr, Gdk.Rectangle alloc, Cairo.Color color)
@@ -114,10 +115,10 @@ namespace Cubano.Client
             grad.AddColorStop (0, light_color);
             grad.AddColorStop (1, dark_color);
             
-            cr.Pattern = grad;
+            cr.SetSource (grad);
             cr.Rectangle (alloc.X + 1.5, alloc.Y + 1.5, alloc.Width - 3, alloc.Height - 2);
             cr.Fill ();
-            grad.Destroy ();
+            grad.Dispose ();
         }
 
         public void DrawHeaderBackground (Cairo.Context cr, Gdk.Rectangle alloc)
@@ -142,7 +143,7 @@ namespace Cubano.Client
             cr.Fill ();
             grad.Destroy ();*/
 
-            Cairo.Color gtk_background_color = new Cairo.Color (); //Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
+            Cairo.Color gtk_background_color = CairoExtensions.GdkRGBAToCairoColor (widget.StyleContext.GetBackgroundColor (StateFlags.Normal));
             Cairo.Color dark_color = CairoExtensions.ColorShade (gtk_background_color, 0.80);
             cr.SetSourceColor(dark_color);
             cr.MoveTo (alloc.X, alloc.Bottom + 0.5);
@@ -163,12 +164,12 @@ namespace Cubano.Client
             cr.LineWidth = 1;
             cr.Antialias = Cairo.Antialias.None;
             
-            cr.Color = dark_color;
+            cr.SetSourceColor (dark_color);
             cr.MoveTo (x, y_1);
             cr.LineTo (x, y_2);
             cr.Stroke ();
             
-            cr.Color = light_color;
+            cr.SetSourceColor (light_color);
             cr.MoveTo (x + 1, y_1);
             cr.LineTo (x + 1, y_2);
             cr.Stroke ();
@@ -203,15 +204,15 @@ namespace Cubano.Client
                 grad.AddColorStop (0, selection_fill_dark);
                 grad.AddColorStop (1, selection_fill_light);
                 
-                cr.Pattern = grad;
+                cr.SetSource (grad);
                 cr.Rectangle (x, y, width, height);
                 cr.Fill ();
-                grad.Destroy ();
+                grad.Dispose ();
             }
             
             if (stroked && !filled) {
                 cr.LineWidth = 1.0;
-                cr.Color = selection_stroke;
+                cr.SetSourceColor (selection_stroke);
                 cr.Rectangle (x + 0.5, y + 0.5, width - 1, height - 1);
                 cr.Stroke ();
             }

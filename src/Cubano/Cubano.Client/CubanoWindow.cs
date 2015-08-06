@@ -552,8 +552,8 @@ namespace Cubano.Client
                 return true;
             }
             
-            RenderBackground (cr);
-            PropagateDraw (Child, cr);
+            //RenderBackground (cr);
+            //PropagateDraw (Child, cr);
             return true;
         }
         
@@ -589,22 +589,22 @@ namespace Cubano.Client
             cr.Translate (Allocation.X, Allocation.Y);
             cr.Rectangle (0, 0, Allocation.Width, Allocation.Height);
             
-            if (render_gradient) {
+            if (!render_gradient) {
                 var grad = new Cairo.LinearGradient (0, 0, 0, Allocation.Height);
                 grad.AddColorStop (0.7, CairoExtensions.GdkColorToCairoColor (Style.Base (StateType.Normal)));
                 grad.AddColorStop (1, CairoExtensions.GdkColorToCairoColor (Style.Background (StateType.Normal)));
                 
-                cr.Pattern = grad;
+                cr.SetSource (grad);
                 cr.Fill ();
-                grad.Destroy ();
+                grad.Dispose ();
              
                 foreach (var circle in circles) {
-                    cr.Color = new Cairo.Color (0, 0, 0, circle.A);
+                    cr.SetSourceColor (new Cairo.Color (0, 0, 0, circle.A));
                     cr.Arc (circle.X + circle.R, circle.Y + circle.R, circle.R, 0, 2 * Math.PI);
                     cr.Fill ();
                 }
             } else {
-                cr.Color = new Cairo.Color (1, 1, 1);
+                cr.SetSourceColor (new Cairo.Color (1, 1, 1));
                 cr.Fill ();
             }
 
@@ -614,15 +614,13 @@ namespace Cubano.Client
             
             if (render_debug) {
                 cr.LineWidth = 1.0;
-                cr.Color = CairoExtensions.RgbToColor (
-                    (uint)rand.Next (0, 0xffffff));
+                cr.SetSourceColor (CairoExtensions.RgbToColor (
+                    (uint)rand.Next (0, 0xffffff)));
                 cr.Rectangle (damage.X + 0.5, damage.Y + 0.5, damage.Width - 1, damage.Height - 1);
                 cr.Stroke ();
             }
             
             cr.ResetClip ();
-
-            CairoExtensions.DisposeContext (cr);
         }
         
 #endregion

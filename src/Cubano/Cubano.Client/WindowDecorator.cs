@@ -231,14 +231,14 @@ namespace Hyena.Gui
                 ResetCursor ();
             } else {
                 default_cursor = false;
-                window.GdkWindow.Cursor = cursor;
+                window.Window.Cursor = cursor;
             }
         }
         
         private void ResetCursor ()
         {
             if (!default_cursor) {
-                window.GdkWindow.Cursor = null;
+                window.Window.Cursor = null;
                 default_cursor = true;
             }
         }
@@ -263,7 +263,7 @@ namespace Hyena.Gui
             x = (int)eventX;
             y = (int)eventY;
             
-            while (current != window.GdkWindow) {
+            while (current != window.Window) {
                 int cx, cy, cw, ch;
                 current.GetGeometry (out cx, out cy, out cw, out ch);
                 x += cx;
@@ -293,11 +293,11 @@ namespace Hyena.Gui
         }
         
         protected bool IsMaximized {
-            get { return (window.GdkWindow.State & Gdk.WindowState.Maximized) != 0; }
+            get { return (window.Window.State & Gdk.WindowState.Maximized) != 0; }
         }
         
         protected bool IsFullscreen {
-            get { return (window.GdkWindow.State & Gdk.WindowState.Fullscreen) != 0; }
+            get { return (window.Window.State & Gdk.WindowState.Fullscreen) != 0; }
         }
         
         protected bool CanResize {

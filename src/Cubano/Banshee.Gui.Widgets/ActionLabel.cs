@@ -45,15 +45,14 @@ namespace Banshee.Gui.Widgets
         {
             CanFocus = true;
             CanActivate = true;
+            HasWindow = false;
         }
         
 #region Windowing/Widgetry
         
         protected override void OnRealized ()
-        {
-            IsRealized = true;
-            
-            GdkWindow = Parent.GdkWindow;
+        {            
+            Window = Parent.Window;
             
             var attributes = new WindowAttr () {
                 WindowType = Gdk.WindowType.Child,
@@ -76,11 +75,14 @@ namespace Banshee.Gui.Widgets
                 WindowAttributesType.Y | 
                 WindowAttributesType.Wmclass;
             
-            input_window = new Gdk.Window (GdkWindow, attributes, attributes_mask) {
+            input_window = new Gdk.Window (Window, attributes, attributes_mask) {
                 UserData = Handle
             };
+
+            IsRealized = true;
+            HasWindow = true;
             
-            base.OnRealized ();
+            //base.OnRealized ();
         }
         
         protected override void OnUnrealized ()
@@ -233,7 +235,11 @@ namespace Banshee.Gui.Widgets
             base_point_size = Style.FontDescription.Size;
             
             ModifyFg (StateType.Selected, Style.Text (StateType.Normal));
-            ModifyFg (StateType.Normal, new Gdk.Color());
+
+            var color = Hyena.Gui.Theming.GtkTheme.GetCairoTextMidColor (this);
+            var gdk_color = new Gdk.Color ((byte)(color.R * 255), (byte)(color.G * 255), (byte)(color.B * 255));
+
+            ModifyFg (StateType.Normal, gdk_color);
             
             CreateLayout ();
             UpdateLayout ();
