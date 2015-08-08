@@ -551,9 +551,9 @@ namespace Cubano.Client
             if (!Visible || !IsMapped) {
                 return true;
             }
-            
-            //RenderBackground (cr);
-            //PropagateDraw (Child, cr);
+                
+            RenderBackground (cr);
+            PropagateDraw (Child, cr);
             return true;
         }
         
@@ -566,6 +566,7 @@ namespace Cubano.Client
         
         private void RenderBackground (Cairo.Context cr)
         {
+
             rand = rand ?? new Random ();
         
             if (circles == null) {
@@ -583,16 +584,16 @@ namespace Cubano.Client
             Gdk.Rectangle damage = new Gdk.Rectangle();
 
             cr.RenderDamage (damage);
-            cr.Rectangle (damage.X, damage.Y, damage.Width, damage.Height);
-            cr.Clip ();
+            //cr.Rectangle (damage.X, damage.Y, damage.Width, damage.Height);
+            //cr.Clip ();
             
             cr.Translate (Allocation.X, Allocation.Y);
             cr.Rectangle (0, 0, Allocation.Width, Allocation.Height);
             
-            if (!render_gradient) {
+            if (render_gradient) {
                 var grad = new Cairo.LinearGradient (0, 0, 0, Allocation.Height);
-                grad.AddColorStop (0.7, CairoExtensions.GdkColorToCairoColor (Style.Base (StateType.Normal)));
-                grad.AddColorStop (1, CairoExtensions.GdkColorToCairoColor (Style.Background (StateType.Normal)));
+                grad.AddColorStop (0.7, CairoExtensions.GdkRGBAToCairoColor (StyleContext.GetColor (StateFlags.Normal)));
+                grad.AddColorStop (1, CairoExtensions.GdkRGBAToCairoColor (StyleContext.GetBackgroundColor (StateFlags.Normal)));
                 
                 cr.SetSource (grad);
                 cr.Fill ();
