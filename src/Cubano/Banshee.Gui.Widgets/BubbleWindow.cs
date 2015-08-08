@@ -119,7 +119,7 @@ namespace Banshee.Gui.Widgets
             
             cr.ClosePath ();
             
-            cr.Color = new Cairo.Color (0, 0, 0, 1);
+            cr.SetSourceColor (new Cairo.Color (0, 0, 0, 1));
             cr.Fill ();
             
             

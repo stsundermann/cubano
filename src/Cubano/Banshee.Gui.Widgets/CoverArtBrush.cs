@@ -126,12 +126,12 @@ namespace Banshee.Gui.Widgets
             set { 
                 if (missing_artwork_size != value) {
                     if (missing_audio_surface != null) {
-                        missing_audio_surface.Destroy ();
+                        missing_audio_surface.Dispose ();
                         missing_audio_surface = null;
                     }
                     
                     if (missing_video_surface != null) {
-                        missing_video_surface.Destroy ();
+                        missing_video_surface.Dispose ();
                         missing_video_surface = null;
                     }
                     

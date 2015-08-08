@@ -254,7 +254,7 @@ namespace Banshee.Gui.Widgets
             }
             
             layout = new Pango.Layout (PangoContext);
-            layout.FontDescription = Style.FontDescription.Copy ();
+            layout.FontDescription = StyleContext.GetFont (StateFlags.Normal).Copy ();
         }
         
         private void UpdateLayout ()

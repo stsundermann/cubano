@@ -154,7 +154,7 @@ namespace Cubano.Client
         
         public void DrawHeaderSeparator (Cairo.Context cr, Gdk.Rectangle alloc, int x)
         {
-            Cairo.Color gtk_background_color = new Cairo.Color (); //Colors.GetWidgetColor (GtkColorClass.Background, StateType.Normal);
+            Cairo.Color gtk_background_color = CairoExtensions.GdkRGBAToCairoColor (widget.StyleContext.GetBackgroundColor (StateFlags.Normal));
             Cairo.Color dark_color = CairoExtensions.ColorShade (gtk_background_color, 0.80);
             Cairo.Color light_color = CairoExtensions.ColorShade (gtk_background_color, 1.1);
             

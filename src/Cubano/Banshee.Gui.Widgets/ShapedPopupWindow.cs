@@ -79,7 +79,7 @@ namespace Banshee.Gui.Widgets
                     //ShapeCombineMask (null, 0, 0);
                     //ShapeCombineMask (bitmap, 0, 0);
                 } else {
-                    using (var cr = Gdk.CairoHelper.Create (GdkWindow)) {
+                    using (var cr = Gdk.CairoHelper.Create (Window)) {
                         DrawShape (cr);
                     }
 
@@ -219,7 +219,7 @@ namespace Banshee.Gui.Widgets
             }
 
             int x, y;
-            context.GdkWindow.GetOrigin (out x, out y);
+            context.Window.GetOrigin (out x, out y);
             
             x += context.Allocation.X;
             y += context.Allocation.Y;

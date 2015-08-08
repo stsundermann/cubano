@@ -62,12 +62,12 @@ namespace Banshee.Gui.Widgets
                 LinearGradient grad = new LinearGradient (0, 0, RenderSize.Width, RenderSize.Height);
                 grad.AddColorStop (0, new Color (0.5, 0.5, 0.5));
                 grad.AddColorStop (1, new Color (0, 0, 0));
-                cr.Pattern = grad;
+                cr.SetSource (grad);
                 
                 cr.Rectangle (0, 0, RenderSize.Width, RenderSize.Height);
                 cr.Fill ();
                 
-                grad.Destroy ();
+                grad.Dispose ();
             
                 base.ClippedRender (cr);
             }
@@ -94,7 +94,7 @@ namespace Banshee.Gui.Widgets
         {
             base.ClippedRender (cr);
             
-            cr.Color = new Color (0, 0, 0, 0.3);
+            cr.SetSourceColor (new Color (0, 0, 0, 0.3));
             cr.LineWidth = 1.0;
             cr.Rectangle (0.5, 0.5, RenderSize.Width - 1, RenderSize.Height - 1);
             cr.Stroke ();

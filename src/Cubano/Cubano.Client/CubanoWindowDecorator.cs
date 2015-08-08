@@ -43,7 +43,7 @@ namespace Cubano.Client
                 return;
             }
         
-            var selected_color = CairoExtensions.GdkColorToCairoColor (Window.Style.Dark (StateType.Active));
+            var selected_color = CairoExtensions.GdkRGBAToCairoColor (Window.StyleContext.GetColor (StateFlags.Selected));
             var grad = new LinearGradient (0, 0, 0, Allocation.Height);
             
             selected_color.A = 0.4;
@@ -51,13 +51,13 @@ namespace Cubano.Client
             selected_color.A = 1.0;
             grad.AddColorStop (1, selected_color);
             
-            cr.Pattern = grad;
+            cr.SetSource (grad);
             cr.LineWidth = 1.0;
             cr.Rectangle (0.5, 0.5, Allocation.Width - 1, Allocation.Height - 1);
             cr.Stroke ();
             
             selected_color.A = 0.5;
-            cr.Color = selected_color;
+            cr.SetSourceColor (selected_color);
             
             double handle_size = 8;
             double ty = 0.5 + Allocation.Height - handle_size - 3;
