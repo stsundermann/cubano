@@ -87,7 +87,7 @@ namespace Cubano.Client
             //color.A = (!context.Sensitive) ? 0.3 : 1.0;
             context.Context.SetSourceColor(color);
             
-            //PangoCairoHelper.ShowLayout (context.Context, context.Layout);
+            Pango.CairoHelper.ShowLayout (context.Context, context.Layout);
         }
 
         public Pango.Weight FontWeight {
