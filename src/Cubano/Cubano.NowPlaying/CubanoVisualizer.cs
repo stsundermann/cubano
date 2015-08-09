@@ -237,10 +237,10 @@ namespace Cubano.NowPlaying
         {
             double x = 320;
             for (int i = 0, n = render_points.Length; i < n; i++) {
-                cr.Color = new Color (0, 1, 0);
+                cr.SetSourceColor (new Color (0, 1, 0));
                 cr.Rectangle (x, Height - Height * render_points[i], 10, Height * render_points[i]);
                 cr.Fill ();
-                cr.Color = new Color (0, 0, 0, 0.3);
+                cr.SetSourceColor (new Color (0, 0, 0, 0.3));
                 cr.LineWidth = 1;
                 cr.Rectangle (x + 0.5, 0.5, 10 - 1, Height - 1);
                 cr.Stroke ();

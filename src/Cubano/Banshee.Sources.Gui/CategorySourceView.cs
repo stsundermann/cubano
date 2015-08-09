@@ -73,7 +73,7 @@ namespace Banshee.Sources.Gui
             Spacing = 15;
         }
         
-        public void Dispose ()
+        public new void Dispose ()
         {
             ServiceManager.SourceManager.SourceAdded -= OnSourceUpdated;
             ServiceManager.SourceManager.SourceRemoved -= OnSourceUpdated;
