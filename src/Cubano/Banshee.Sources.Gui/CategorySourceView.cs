@@ -99,7 +99,7 @@ namespace Banshee.Sources.Gui
         
         private bool ShouldShowSource (Source source)
         {
-            return source != null && source.Parent == null &&
+            return source != null && source.Parent == null && source.TypeName != "GroupSource" &&
                 !source.UniqueId.StartsWith ("NowPlayingSource") &&
                 !source.UniqueId.StartsWith ("PlayQueueSource");
         }
