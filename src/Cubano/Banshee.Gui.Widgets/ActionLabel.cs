@@ -30,98 +30,36 @@ using Gtk;
 
 namespace Banshee.Gui.Widgets
 {
-    public class ActionLabel : Widget
+    public class ActionLabel : DrawingArea
     {
         private Pango.Layout layout;
         private int base_point_size;
         private int layout_width;
         private int layout_height;
-        
-        private Gdk.Window input_window;
-        
+
         public event EventHandler Activated;
         
         public ActionLabel ()
         {
             CanFocus = true;
             CanActivate = true;
-            HasWindow = false;
         }
-        
-#region Windowing/Widgetry
-        
-        protected override void OnRealized ()
-        {            
-            Window = Parent.Window;
-            
-            var attributes = new WindowAttr () {
-                WindowType = Gdk.WindowType.Child,
-                X = Allocation.X,
-                Y = Allocation.Y,
-                Width = Allocation.Width,
-                Height = Allocation.Height,
-                Wclass = WindowWindowClass.InputOnly,
-                EventMask = (int)(
-                    EventMask.ButtonPressMask |
-                    EventMask.ButtonReleaseMask |
-                    EventMask.KeyPressMask | 
-                    EventMask.KeyReleaseMask | 
-                    EventMask.EnterNotifyMask |
-                    EventMask.LeaveNotifyMask)
-            };
-            
-            var attributes_mask = 
-                WindowAttributesType.X | 
-                WindowAttributesType.Y | 
-                WindowAttributesType.Wmclass;
-            
-            input_window = new Gdk.Window (Window, attributes, attributes_mask) {
-                UserData = Handle
-            };
 
-            IsRealized = true;
-            HasWindow = true;
-            
-            //base.OnRealized ();
-        }
-        
-        protected override void OnUnrealized ()
+        protected override void OnRealized ()
         {
-            IsRealized = false;
-            
-            input_window.UserData = IntPtr.Zero;
-            input_window.Destroy ();
-            input_window = null;
-            
-            base.OnUnrealized ();
+            base.OnRealized ();
+            Window.Events =
+                EventMask.ButtonPressMask |
+                EventMask.ButtonReleaseMask |
+                EventMask.EnterNotifyMask |
+                EventMask.LeaveNotifyMask |
+                EventMask.KeyPressMask |
+                EventMask.KeyReleaseMask;
         }
-        
-        protected override void OnMapped ()
-        {
-            IsMapped = true;
-            input_window.Show ();
-        }
-        
-        protected override void OnUnmapped ()
-        {
-            IsMapped = false;
-            input_window.Hide ();
-        }
-        
-        protected override void OnSizeAllocated (Rectangle allocation)
-        {
-            base.OnSizeAllocated (allocation);
-            
-            if (IsRealized) {
-                input_window.MoveResize (allocation);
-            }
-        }
-        
-#endregion
 
 #region Input
 
-        private StateType pending_state;
+        private StateFlags pending_state;
 
         protected override bool OnEnterNotifyEvent (Gdk.EventCrossing evnt)
         {
@@ -129,8 +67,8 @@ namespace Banshee.Gui.Widgets
                 return base.OnEnterNotifyEvent (evnt);
             }
             
-            pending_state = State;
-            //State = StateType.Prelight;
+            pending_state = StateFlags;
+            SetStateFlags (StateFlags.Prelight, true);
             
             return base.OnEnterNotifyEvent (evnt);
         }
@@ -138,7 +76,7 @@ namespace Banshee.Gui.Widgets
         protected override bool OnLeaveNotifyEvent (Gdk.EventCrossing evnt)
         {
             if (CanActivate) {
-                //State = pending_state;
+                SetStateFlags (pending_state, true);
             }
             
             return base.OnLeaveNotifyEvent (evnt);
@@ -214,25 +152,25 @@ namespace Banshee.Gui.Widgets
                     x + 2, y + layout_height - 2,
                     x + layout_width - 4, y + layout_height - 2);*/
             }
-            
-            Gtk.Style.PaintLayout (Style, cr, State, false, 
-                this, null, x, y, layout);
+            StyleContext.RenderLayout (cr, 0, 0, layout);
+            //Gtk.Style.PaintLayout (Style, cr, State, false, 
+            //    this, null, x, y, layout);
                 
             return true;
         }
         
         private bool changing_style = false;
     
-        protected override void OnStyleSet (Style previous)
+        protected override void OnStyleUpdated ()
         {
-            base.OnStyleSet (previous);
+            base.OnStyleUpdated ();
             if (changing_style) {
                 return;
             }
             
             changing_style = true;
             
-            base_point_size = Style.FontDescription.Size;
+            base_point_size = StyleContext.GetFont (StateFlags.Normal).Size;
             
             ModifyFg (StateType.Selected, Style.Text (StateType.Normal));
 
@@ -300,15 +238,15 @@ namespace Banshee.Gui.Widgets
             set {
                 is_selected = value;
                 if (is_selected) {
-                    pending_state = StateType.Selected;
+                    pending_state = StateFlags.Selected;
                     if (State != StateType.Prelight) {
-                        //State = StateType.Selected;
+                        SetStateFlags (StateFlags.Selected, true);
                     }
                     CurrentFontSizeEm = ActiveFontSizeEm;
                 } else {
-                    pending_state = StateType.Normal;
+                    pending_state = StateFlags.Normal;
                     if (State != StateType.Prelight) {
-                        //State = StateType.Normal;
+                        SetStateFlags (StateFlags.Normal, true);
                     }
                     CurrentFontSizeEm = DefaultFontSizeEm;
                 }
