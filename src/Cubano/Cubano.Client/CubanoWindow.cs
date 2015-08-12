@@ -57,6 +57,13 @@ namespace Cubano.Client
 {
     public class CubanoWindow : BaseClientWindow, IClientWindow, IDBusObjectName, IService, IDisposable /*, IHasSourceView */
     {
+        const string CONFIG_NAMESPACE = "player_window";
+        static readonly SchemaEntry<int> WidthSchema = WindowConfiguration.NewWidthSchema (CONFIG_NAMESPACE, 300);
+        static readonly SchemaEntry<int> HeightSchema = WindowConfiguration.NewHeightSchema (CONFIG_NAMESPACE, 309);
+        static readonly SchemaEntry<int> XPosSchema = WindowConfiguration.NewXPosSchema (CONFIG_NAMESPACE);
+        static readonly SchemaEntry<int> YPosSchema = WindowConfiguration.NewYPosSchema (CONFIG_NAMESPACE);
+        static readonly SchemaEntry<bool> MaximizedSchema = WindowConfiguration.NewMaximizedSchema (CONFIG_NAMESPACE);
+
         private VBox primary_vbox;
         private CubanoHeader header;
     
@@ -82,13 +89,9 @@ namespace Cubano.Client
         {
         }
         
-        public CubanoWindow () : base ("Cubano", new WindowConfiguration(
-            WindowConfiguration.NewWidthSchema("cubano.window", 1000),
-            WindowConfiguration.NewHeightSchema("cubano.window", 500),
-            WindowConfiguration.NewXPosSchema("cubano.window"),
-            WindowConfiguration.NewYPosSchema("cubano.window"),
-            WindowConfiguration.NewMaximizedSchema("cubano.window")
-        ))
+        public CubanoWindow () : 
+            base ("Cubano", 
+                new WindowConfiguration (WidthSchema, HeightSchema, XPosSchema, YPosSchema, MaximizedSchema))
         {
         }
         
@@ -101,11 +104,13 @@ namespace Cubano.Client
             BuildPrimaryLayout ();
             ConnectEvents ();
 
-            // ActionService.SourceActions.SourceView = this;
+            //ActionService.SourceActions.SourceView = this;
             
             composite_view.TrackView.HasFocus = true;
             
             InitialShowPresent ();
+
+            DefaultSize = new Gdk.Size (WidthSchema.Get (), HeightSchema.Get ());
         }
         
 #region System Overrides 
@@ -566,7 +571,6 @@ namespace Cubano.Client
         
         private void RenderBackground (Cairo.Context cr)
         {
-
             rand = rand ?? new Random ();
         
             if (circles == null) {
@@ -592,7 +596,7 @@ namespace Cubano.Client
             
             if (render_gradient) {
                 var grad = new Cairo.LinearGradient (0, 0, 0, Allocation.Height);
-                grad.AddColorStop (0.7, CairoExtensions.GdkRGBAToCairoColor (StyleContext.GetColor (StateFlags.Normal)));
+                grad.AddColorStop (0.7, CairoExtensions.GdkRGBAToCairoColor (StyleContext.GetBackgroundColor (StateFlags.Prelight)));
                 grad.AddColorStop (1, CairoExtensions.GdkRGBAToCairoColor (StyleContext.GetBackgroundColor (StateFlags.Normal)));
                 
                 cr.SetSource (grad);
