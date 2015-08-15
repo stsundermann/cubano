@@ -118,6 +118,8 @@ namespace Banshee.Gui.Widgets
             if (current_image.Brush.ShouldUpdate (track, image_size)) {
                 update_image.Brush.Load (track, image_size);
                 Children.Move (update_image, 1);
+                current_image.Opacity = 0;
+                update_image.Opacity = 1;
                 
                 /*update_image.AnimateDouble ("Opacity").From (0).To (1).Repeat (1).Compose ((a, p) => {
                     if (p == 1) {

@@ -112,7 +112,7 @@ namespace Banshee.Gui.Widgets
         private void DestroyCurrentSurface ()
         {
             if (Surface != null && Surface != missing_audio_surface && Surface != missing_video_surface) {
-                Surface.Destroy ();
+                Surface.Dispose ();
                 Surface = null;
             }
         }

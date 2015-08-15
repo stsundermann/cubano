@@ -45,7 +45,7 @@ namespace Banshee.Gui.Widgets
                 PlayerEvent.StartOfStream |
                 PlayerEvent.StateChange);
                 
-                Opacity = 0;
+                Opacity = 1;
         }
         
         public void Dispose ()
@@ -101,11 +101,13 @@ namespace Banshee.Gui.Widgets
         
         private void Show ()
         {
+            Opacity = 1;
             //Animate ("Opacity").To (1).Repeat (1).Start ();
         }
         
         private void Hide ()
         {
+            Opacity = 0;
             //Animate ("Opacity").To (0).Repeat (1).Start ();
         }
         
