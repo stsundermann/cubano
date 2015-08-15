@@ -58,11 +58,11 @@ namespace Cubano.Client
                     DefaultFontSizeEm = 2.0,
                     FontFamily = "DejaVu Sans"
                 })
-            }, 0, 1, 0, 1, AttachOptions.Shrink, AttachOptions.Fill | AttachOptions.Expand, 0, 0);
+            }, 0, 1, 0, 1, AttachOptions.Shrink, AttachOptions.Shrink | AttachOptions.Shrink, 0, 0);
             
-            table.Attach (new Alignment (1.0f, 0.0f, 0.0f, 0.0f) {
+            table.Attach (new Alignment (0.0f, 0.0f, 1.0f, 0.0f) {
                 (SearchEntry = new SearchEntry ())
-            }, 1, 2, 0, 1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, 0, 0);
+            }, 1, 2, 0, 1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Expand, 0, 0);
                 
             var action_box = new HBox ();
             var align = new Alignment (0.0f, 0.0f, 0.0f, 0.0f) { action_box };
@@ -94,7 +94,7 @@ namespace Cubano.Client
             for (int i = 0; i < children.Length; i++) {
                 children[i].Visible = false;
             }
-            
+
             var box = new HBox ();
             box.PackStart (new CategorySourceView (), false, false, 0);
             box.PackEnd (Toolbar, false, false, 0);
