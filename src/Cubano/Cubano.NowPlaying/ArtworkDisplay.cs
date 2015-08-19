@@ -62,7 +62,7 @@ namespace Cubano.NowPlaying
         }
     }
 
-    internal class AlbumArtActor : Texture
+    internal class AlbumArtActor : Actor
     {
         private static ArtworkManager artwork_manager;
     
@@ -83,8 +83,10 @@ namespace Cubano.NowPlaying
             
             var image = artwork_manager.LookupScalePixbuf (album.ArtworkId, (int)textureSize);
             if (image != null) {
-                SetFromRgbData (image.Pixels, image.HasAlpha, image.Width, image.Height,
-                    image.Rowstride, image.HasAlpha ? 4 : 3, TextureFlags.None);
+                var img = (Image)Image.New ();
+                img.SetData (image.Pixels, image.HasAlpha ? Cogl.PixelFormat.Rgba8888 : Cogl.PixelFormat.Rgb888, 
+                    (uint)image.Width, (uint)image.Height, (uint)image.Rowstride);
+                Content = img;
             }
             
             this.album = album;
