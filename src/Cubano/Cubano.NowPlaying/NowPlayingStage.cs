@@ -138,10 +138,10 @@ namespace Cubano.NowPlaying
             TrackInfo track = ServiceManager.PlayerEngine.CurrentTrack;
             bool video_playing = (track != null && (track.MediaAttributes & TrackMediaAttributes.VideoStream) != 0);
             
-            /*artwork_display.AnimationChain
+            artwork_display.AnimationChain
                 .SetEasing (video_playing ? AnimationMode.EaseInQuad : AnimationMode.EaseOutQuad)
                 .SetDuration (750)
-                .Animate ("opacity", video_playing ? 0 : 255);*/
+                .Animate ("opacity", video_playing ? 0 : 255);
         }
         
 #endregion

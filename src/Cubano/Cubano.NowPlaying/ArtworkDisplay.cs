@@ -253,10 +253,10 @@ namespace Cubano.NowPlaying
             
             var cell_source = new Clone (GetRandomActor ()) { Visible = true, Parent = this };
             cell_source.Allocate (new ActorBox() {
-                X1 = cell_target.AllocationGeometry.X,
-                Y1 = cell_target.AllocationGeometry.Y,
-                X2 = cell_target.AllocationGeometry.Width,
-                Y2 = cell_target.AllocationGeometry.Height
+                X1 = target_x * 100,
+                Y1 = target_y * 100,
+                X2 = target_x * 100 + 100,
+                Y2 = target_y * 100 + 100
             }, AllocationFlags.DelegateLayout);
             
             waiting_for_slot.Insert (0, cell_source);
@@ -265,7 +265,7 @@ namespace Cubano.NowPlaying
                 history_slots.Dequeue ();
             }
 
-            /*cell_target.AnimationChain
+            cell_target.AnimationChain
                 .SetEasing (AnimationMode.EaseInQuad)
                 .SetDuration ((uint)random.Next (300, 1500))
                 .WhenFinished ((a) => {
@@ -273,7 +273,7 @@ namespace Cubano.NowPlaying
                     waiting_for_slot.Remove (cell_source);
                     QueueRedraw ();
                  })
-                .Animate ("opacity", 0);*/
+                .Animate ("opacity", 0);
                 
         }
 
@@ -283,9 +283,9 @@ namespace Cubano.NowPlaying
             cell_select_timeline.Pause ();
             
             foreach (var child in waiting_for_slot) {
-                /*if (child.AnimationChain.LastAnimation != null) {
-                    child.AnimationChain.LastAnimation.Timeline.Stop ();
-                }*/
+                if (child.AnimationChain.LastAnimation != null) {
+                    child.AnimationChain.LastAnimation.Stop ();
+                }
             }
             
             waiting_for_slot.Clear ();
